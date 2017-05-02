@@ -1,0 +1,16 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix hobbit: <http://w3id.org/hobbit/vocab#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix gerbilqa: <http://w3id.org/gerbil/qa/hobbit/vocab#> .
+
+<http://w3id.org/hobbit/systems/wdaqua> a  hobbit:SystemInstance; 
+	rdfs:label	"WDAQUA/QANARY"@en;
+	rdfs:comment	"Wrapper for wdaqua/qanary webservice"@en;
+    hobbit:imageName "git.project-hobbit.eu:4567/myhobbitusername/myprojectname";
+    hobbit:implementsAPI gerbilqa:GerbilQAApi ;
+    <http://w3id.org/hobbit/systems/wdaqua#url> "http://wdaqua-qanary.univ-st-etienne.fr/gerbil"^^xsd:string .
+	
+<http://w3id.org/hobbit/systems/wdaqua#url> a hobbit:FeatureParameter ;
+    rdfs:label "WdaquaWebserviceUrl"@en ;
+    rdfs:comment "The url to reach the wdaqua/qanary rest service"@en ;
+    rdfs:range  xsd:string .
