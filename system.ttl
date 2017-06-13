@@ -8,7 +8,7 @@
 	rdfs:comment	"Wrapper for wdaqua/qanary webservice"@en;
     hobbit:imageName "git.project-hobbit.eu:4567/gerbil/wdaqua-qanary-wrapper";
     hobbit:implementsAPI gerbilqa:GerbilQAApi ;
-    <http://w3id.org/hobbit/systems/wdaqua#url> "http://wdaqua-qanary.univ-st-etienne.fr/gerbil?parameter=\"query\""^^xsd:string .
+    <http://w3id.org/hobbit/systems/wdaqua#url> "http://wdaqua-qanary.univ-st-etienne.fr/gerbil?parameter=query"^^xsd:string .
 	
 <http://w3id.org/hobbit/systems/wdaqua#url> a hobbit:FeatureParameter ;
     rdfs:label "WdaquaWebserviceUrl"@en ;
