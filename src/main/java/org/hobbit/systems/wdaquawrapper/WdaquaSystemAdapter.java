@@ -31,6 +31,7 @@ public class WdaquaSystemAdapter extends AbstractSystemAdapter {
 		super.init();
 
 		qanary = new QANARY();
+		qanary.setSetLangPar(false);
 
 		Literal uri = RdfHelper.getLiteral(this.systemParamModel, WDAQUA_SYSTEM_URI, WDAQUA_URL);
 
@@ -43,51 +44,57 @@ public class WdaquaSystemAdapter extends AbstractSystemAdapter {
 
 	}
 
-	public void receiveGeneratedData(byte[] data) {
+	@Override
+	public void receiveGeneratedData(final byte[] data) {
 
 	}
 
-	public void receiveGeneratedTask(String taskId, byte[] data) {
-
-		QaldJson inputJson = null;
+	@Override
+	public void receiveGeneratedTask(final String taskId, final byte[] data) {
 		try {
-			inputJson = (QaldJson) ExtendedQALDJSONLoader.readJson(data, QaldJson.class);
-		} catch (IOException e1) {
-			LOGGER.error("Couldn't read input json", e1);
-		}
-
-		List<IQuestion> questions = EJQuestionFactory.getQuestionsFromQaldJson(inputJson);
-
-		for (IQuestion it : questions) {
-			// In QaldJson, a question can have multiple languages, but only one
-			// answer set. So if we answer a question with multiple languages,
-			// we don't know on which lkanguage the answer is based on.
-			if (it.getLanguageToQuestion().entrySet().size() > 1) {
-
-				LOGGER.info("Recieved Question with more than one language - using arbitrary");
-			}
+			QaldJson inputJson = null;
 			try {
-				qanary.search(it, it.getLanguageToQuestion().values().iterator().next());
-			} catch (Exception e) {
-				LOGGER.info("Couldn't answer question with YODA ", e);
+				inputJson = (QaldJson) ExtendedQALDJSONLoader.readJson(data, QaldJson.class);
+			} catch (IOException e1) {
+				LOGGER.error("Couldn't read input json", e1);
 			}
-		}
 
-		QaldJson answerJson = EJQuestionFactory.getQaldJson(questions);
+			List<IQuestion> questions = EJQuestionFactory.getQuestionsFromQaldJson(inputJson);
 
-		byte[] result = new byte[0];
-		try {
-			result = ExtendedQALDJSONLoader.writeJson(answerJson);
-		} catch (JsonProcessingException e1) {
-			// TODO handle malformed json
-			e1.printStackTrace();
-		}
+			for (IQuestion it : questions) {
+				// In QaldJson, a question can have multiple languages, but only one
+				// answer set. So if we answer a question with multiple languages,
+				// we don't know on which lkanguage the answer is based on.
+				if (it.getLanguageToQuestion().entrySet().size() > 1) {
 
-		// Send the result to the evaluation storage
-		try {
-			sendResultToEvalStorage(taskId, result);
-		} catch (IOException e) {
-			// Log the error
+					LOGGER.info("Recieved Question with more than one language - using arbitrary");
+				}
+				try {
+					String lang = it.getLanguageToQuestion().keySet().iterator().next();
+					qanary.search(it, lang);
+				} catch (Exception e) {
+					LOGGER.info("Couldn't answer question with wdaqua ", e);
+				}
+			}
+
+			QaldJson answerJson = EJQuestionFactory.getQaldJson(questions);
+
+			byte[] result = new byte[0];
+			try {
+				result = ExtendedQALDJSONLoader.writeJson(answerJson);
+			} catch (JsonProcessingException e1) {
+				LOGGER.info("Couldnt write answerjson ", e1);
+
+			}
+
+			// Send the result to the evaluation storage
+			try {
+				sendResultToEvalStorage(taskId, result);
+			} catch (IOException e) {
+				LOGGER.info("Couldn't send answer to eval storage ", e);
+			}
+		} catch (Exception e) {
+			LOGGER.info("wdaqua had an error", e);
 		}
 	}
 
@@ -97,4 +104,7 @@ public class WdaquaSystemAdapter extends AbstractSystemAdapter {
 		super.close();
 	}
 
+	public static void main(final String[] args) throws Exception {
+
+	}
 }
