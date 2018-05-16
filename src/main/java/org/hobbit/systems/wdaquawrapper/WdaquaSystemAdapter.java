@@ -3,7 +3,7 @@ package org.hobbit.systems.wdaquawrapper;
 import java.io.IOException;
 import java.util.List;
 
-import org.aksw.qa.commons.datastructure.IQuestion;
+import org.aksw.qa.commons.datastructure.*;
 import org.aksw.qa.commons.load.json.EJQuestionFactory;
 import org.aksw.qa.commons.load.json.ExtendedQALDJSONLoader;
 import org.aksw.qa.commons.load.json.QaldJson;
@@ -30,7 +30,7 @@ public class WdaquaSystemAdapter extends AbstractSystemAdapter {
 	public void init() throws Exception {
 		super.init();
 
-		qanary = new QANARY();
+		qanary = new QANARY("http://wdaqua-core1.univ-st-etienne.fr/gerbil","dbpedia");
 		qanary.setSetLangPar(false);
 
 		Literal uri = RdfHelper.getLiteral(this.systemParamModel, WDAQUA_SYSTEM_URI, WDAQUA_URL);

@@ -4,13 +4,7 @@
 @prefix gerbilqa: <http://w3id.org/gerbil/qa/hobbit/vocab#> .
 
 <http://w3id.org/hobbit/systems/wdaqua> a  hobbit:SystemInstance; 
-	rdfs:label	"WDAQUA/QANARY"@en;
-	rdfs:comment	"Wrapper for wdaqua/qanary webservice"@en;
-    hobbit:imageName "git.project-hobbit.eu:4567/gerbil/wdaqua-qanary-wrapper";
-    hobbit:implementsAPI gerbilqa:GerbilQAApi ;
-    <http://w3id.org/hobbit/systems/wdaqua#url> "https://wdaqua-qanary.univ-st-etienne.fr/gerbil-execute/wdaqua-core0,%20QueryExecuter"^^xsd:string .
-	
-<http://w3id.org/hobbit/systems/wdaqua#url> a hobbit:FeatureParameter ;
-    rdfs:label "WdaquaWebserviceUrl"@en ;
-    rdfs:comment "The url to reach the wdaqua/qanary rest service"@en ;
-    rdfs:range  xsd:string .
+	rdfs:label	"WDAQUA/WDAqua-core1"@en;
+	rdfs:comment	"Wrapper for WDAqua-core1"@en;
+    hobbit:imageName "git.project-hobbit.eu:4567/dennis.diefenbach/wdaqua-core1-sqa";
+    hobbit:implementsAPI gerbilqa:GerbilQAApi .
